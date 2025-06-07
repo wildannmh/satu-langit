@@ -1,0 +1,1091 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forum - Satu Langit</title>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Kaushan+Script&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        /* Main Content */
+        .main-content {
+          padding-top: 100px;
+          min-height: 100vh;
+        }
+
+        .max-container {
+          max-width: 1000px;
+        }
+
+        .page-title {
+          font-family: 'Kaushan Script', cursive;
+          text-align: center;
+          font-size: 3rem;
+          font-weight: 600;
+          margin-bottom: 2rem;
+          color: white;
+          text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        /* Form Post Baru */
+        .new-post-form {
+          background: rgba(255, 255, 255, 0.8);
+          backdrop-filter: blur(10px);
+          border-radius: 15px;
+          padding: 2rem;
+          margin-bottom: 2rem;
+          box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .new-post-form h3 {
+          color: #555555;
+          margin-bottom: 1.5rem;
+          font-weight: 600;
+        }
+
+        .form-group {
+          margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+          display: block;
+          margin-bottom: 0.5rem;
+          color: #555555;
+          font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group textarea {
+          background: rgba(255, 255, 255, 0.9);
+          width: 100%;
+          padding: 1rem;
+          border: 2px solid rgba(240, 240, 240, 0.9);
+          border-radius: 10px;
+          font-family: 'Poppins', sans-serif;
+          font-size: 1rem;
+          transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+          outline: none;
+          border-color: #67B3E5;
+        }
+
+        .form-group textarea {
+          resize: vertical;
+          min-height: 120px;
+        }
+
+        .submit-btn {
+          background: linear-gradient(135deg, #67B3E5 0%, #76CCE3 100%);
+          color: white;
+          border: none;
+          padding: 1rem 2rem;
+          border-radius: 25px;
+          font-size: 1rem;
+          font-weight: 600;
+          cursor: pointer;
+          transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .submit-btn:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        /* Custom Alert Style */
+        .custom-alert {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .alert-content {
+            background: rgba(255, 255, 255, 0.8);;
+            padding: 2rem;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            text-align: center;
+            position: relative;
+            animation: alertFadeIn 0.3s;
+        }
+
+        @keyframes alertFadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .close-alert {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #555;
+        }
+
+        .close-alert:hover {
+            color: #000;
+        }
+
+        /* Forum Posts Container */
+        .forum-container {
+          background: rgba(255, 255, 255, 0.8);
+          backdrop-filter: blur(10px);
+          border-radius: 15px;
+          padding: 2rem;
+          padding-bottom: 2rem;
+          box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        /* Forum Post */
+        .forum-post {
+          border-bottom: 1px solid #eee;
+          padding: 2rem 0;
+          position: relative;
+        }
+
+        .forum-post:last-child {
+          border-bottom: none;
+        }
+
+        .post-header {
+          display: flex;
+          align-items: center;
+          gap: 1rem;
+          margin-bottom: 1rem;
+        }
+
+        .forum-avatar {
+          width: 50px;
+          height: 50px;
+          background: linear-gradient(135deg, #67B3E5 0%, #76CCE3 100%);
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: white;
+          font-weight: 600;
+          font-size: 1.2rem;
+          flex-shrink: 0;
+        }
+
+        .post-info h3 {
+          color: #555555;
+          font-size: 1.1rem;
+          margin-bottom: 0.2rem;
+        }
+
+        .post-meta {
+          font-size: 0.9rem;
+          color: #888;
+        }
+
+        .post-content {
+          margin-left: 66px;
+          margin-bottom: 1rem;
+        }
+
+        .post-content p {
+          color: #555555;
+          line-height: 1.8;
+          margin-bottom: 1rem;
+        }
+
+        .post-actions {
+          display: flex;
+          gap: 1rem;
+          margin-left: 66px;
+          margin-bottom: 1rem;
+        }
+
+        .action-btn {
+          background: none;
+          border: none;
+          color: #888;
+          cursor: pointer;
+          font-size: 0.9rem;
+          padding: 0.5rem 1rem;
+          border-radius: 20px;
+          transition: all 0.3s;
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+        }
+
+        .action-btn:hover {
+          background: rgba(102, 126, 234, 0.1);
+          color: #67B3E5;
+        }
+
+        .action-btn.liked {
+          color: #e74c3c;
+        }
+
+        /* Reply Form */
+        .reply-form {
+          margin-left: 66px;
+          margin-top: 1rem;
+          background: rgba(255, 255, 255, 0.6);
+          padding: 1.5rem;
+          border-radius: 10px;
+          display: none;
+        }
+
+        .reply-form.show {
+          display: block;
+        }
+
+        .reply-form textarea:focus {
+          outline: none;
+          border-color: #67B3E5;
+        }
+
+        .reply-form textarea {
+          width: 100%;
+          padding: 1rem;
+          border: 2px solid #e1e1e1;
+          border-radius: 8px;
+          resize: vertical;
+          min-height: 80px;
+          font-family: 'Poppins', sans-serif;
+        }
+
+        .reply-form .form-actions {
+          display: flex;
+          gap: 1rem;
+          margin-top: 1rem;
+        }
+
+        .reply-btn {
+          background: #67B3E5;
+          color: white;
+          border: none;
+          padding: 0.5rem 1.5rem;
+          border-radius: 20px;
+          cursor: pointer;
+          font-size: 0.9rem;
+          transition: background 0.3s;
+        }
+
+        .reply-btn:hover {
+          background: #76CCE3;
+        }
+
+        .cancel-btn {
+          background: #6c757d;
+          color: white;
+          border: none;
+          padding: 0.5rem 1.5rem;
+          border-radius: 20px;
+          cursor: pointer;
+          font-size: 0.9rem;
+          transition: background 0.3s;
+        }
+
+        .cancel-btn:hover {
+          background: #5a6268;
+        }
+
+        /* Replies */
+        .replies {
+          margin-left: 66px;
+          margin-top: 1rem;
+        }
+
+        .reply {
+          background: rgba(255, 255, 255, 0.4);
+          border-radius: 10px;
+          padding: 1.5rem;
+          margin-bottom: 1rem;
+          border-left: 4px solid #67B3E5;
+        }
+
+        .reply-header {
+          display: flex;
+          align-items: center;
+          gap: 1rem;
+          margin-bottom: 1rem;
+        }
+
+        .reply-avatar {
+          width: 35px;
+          height: 35px;
+          background: linear-gradient(135deg, #67B3E5 0%, #76CCE3 100%);
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: white;
+          font-weight: 600;
+          font-size: 0.9rem;
+        }
+
+        .reply-info h4 {
+          color: #555555;
+          font-size: 1rem;
+          margin-bottom: 0.2rem;
+        }
+
+        .reply-meta {
+          font-size: 0.8rem;
+          color: #888;
+        }
+
+        .reply-content {
+          color: #555555;
+          line-height: 1.6;
+        }
+
+        .reply-actions {
+          display: flex;
+          gap: 1rem;
+          margin-top: 1rem;
+        }
+
+        .reply-actions .action-btn {
+          font-size: 0.8rem;
+          padding: 0.3rem 0.8rem;
+        }
+
+        /* Show More Button */
+        .show-more-btn {
+          background: rgba(255, 255, 255, 0.3);
+          color: #67B3E5;
+          border: 2px solid #67B3E5;
+          padding: 0.7rem 1.5rem;
+          border-radius: 20px;
+          cursor: pointer;
+          font-size: 1rem;
+          font-weight: 500;
+          margin: 1rem auto;
+          display: block;
+          transition: all 0.3s;
+        }
+
+        .show-more-btn:hover {
+          background: #67B3E5;
+          color: white;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+          .page-title {
+            font-size: 2.5rem;
+          }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="nav-container">
+            <a href="index.html">
+                <div class="logo">Satu Langit</div>
+            </a>
+            <nav>
+                <ul class="nav-menu">
+                    <li><a href="index.html"><span>B</span><span>e</span><span>r</span><span>a</span><span>n</span><span>d</span><span>a</span></a></li>
+                    <li><a href="index.html#tentang"><span>T</span><span>e</span><span>n</span><span>t</span><span>a</span><span>n</span><span>g</span></a></li>
+                    <li><a href="index.html#kegiatan"><span>K</span><span>e</span><span>g</span><span>i</span><span>a</span><span>t</span><span>a</span><span>n</span></a></li>
+                    <li><a href="index.html#artikel"><span>A</span><span>r</span><span>t</span><span>i</span><span>k</span><span>e</span><span>l</span></a></li>
+                    <li><a href="index.html#forum"><span>F</span><span>o</span><span>r</span><span>u</span><span>m</span></a></li>
+                </ul>
+            </nav>
+            <a href="index.html" class="back-btn">← Kembali</a>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <section class="background">
+        <main class="main-content">
+            <div class="container max-container">
+                <h1 class="page-title">Forum Diskusi</h1>
+    
+                <!-- Form Post Baru -->
+                <div class="new-post-form">
+                    <h3>Buat Post Baru</h3>
+                    <form id="newPostForm">
+                        <div class="form-group">
+                            <label for="authorName">Nama</label>
+                            <input type="text" id="authorName" name="authorName" placeholder="Masukkan nama Anda" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="postContent">Pesan</label>
+                            <textarea id="postContent" name="postContent" placeholder="Bagikan pemikiran Anda..." required></textarea>
+                        </div>
+                        <button type="submit" class="submit-btn">Kirim Post</button>
+                    </form>
+                </div>
+    
+                <!-- Forum Posts -->
+                <div class="forum-container">
+                    <!-- Post 1 -->
+                    <div class="forum-post">
+                        <div class="post-header">
+                            <div class="forum-avatar">Y</div>
+                            <div class="post-info">
+                                <h3>Yayan Ruhian</h3>
+                                <div class="post-meta">6 Juni 2025 • 08:00</div>
+                            </div>
+                        </div>
+                        <div class="post-content">
+                            <p>Assalamu'alaikum warahmatullahi wabarakatuh. Apa kabar semuanya? Semoga dalam keadaan sehat dan dalam lindungan Allah SWT.</p>
+                            <p>Hari ini saya ingin berbagi tentang pentingnya menjaga silaturahmi dalam kehidupan sehari-hari. Bagaimana pengalaman teman-teman dalam menjaga hubungan dengan keluarga dan teman?</p>
+                        </div>
+                        <div class="post-actions">
+                            <button class="action-btn like-btn" data-likes="12">
+                                <span class="like-icon">👍</span>
+                                <span class="like-count">22</span>
+                            </button>
+                            <button class="action-btn reply-toggle-btn">
+                                💬 Balas
+                            </button>
+                            <button class="action-btn">
+                                🔗 Bagikan
+                            </button>
+                            <button class="action-btn">🚨 Laporkan</button>
+                        </div>
+                        
+                        <!-- Reply Form -->
+                        <div class="reply-form">
+                            <textarea placeholder="Tulis balasan Anda..."></textarea>
+                            <div class="form-actions">
+                                <button class="reply-btn">Kirim</button>
+                                <button class="cancel-btn">Batal</button>
+                            </div>
+                        </div>
+    
+                        <!-- Replies -->
+                        <div class="replies">
+                            <div class="reply">
+                                <div class="reply-header">
+                                    <div class="reply-avatar">A</div>
+                                    <div class="reply-info">
+                                        <h4>Ahmad Rizki</h4>
+                                        <div class="reply-meta">6 Juni 2025 • 09:15</div>
+                                    </div>
+                                </div>
+                                <div class="reply-content">
+                                    <p>Wa'alaikumsalam warahmatullahi wabarakatuh. Alhamdulillah dalam keadaan sehat, akhi. Saya setuju sekali tentang pentingnya silaturahmi. Biasanya saya menyempatkan waktu untuk menghubungi keluarga setiap minggu.</p>
+                                </div>
+                                <div class="reply-actions">
+                                    <button class="action-btn like-btn" data-likes="5">
+                                        <span class="like-icon">👍</span>
+                                        <span class="like-count">16</span>
+                                    </button>
+                                    <button class="action-btn">💬 Balas</button>
+                                    <button class="action-btn">🚨 Laporkan</button>
+                                </div>
+                            </div>
+    
+                            <div class="reply">
+                                <div class="reply-header">
+                                    <div class="reply-avatar">S</div>
+                                    <div class="reply-info">
+                                        <h4>Siti Nurhaliza</h4>
+                                        <div class="reply-meta">6 Juni 2025 • 10:30</div>
+                                    </div>
+                                </div>
+                                <div class="reply-content">
+                                    <p>Barakallahu fiik atas remindernya, ukhti. Saya kadang merasa sibuk dengan aktivitas sehari-hari sampai lupa menghubungi keluarga. Terima kasih sudah mengingatkan 😊</p>
+                                </div>
+                                <div class="reply-actions">
+                                    <button class="action-btn like-btn" data-likes="3">
+                                        <span class="like-icon">👍</span>
+                                        <span class="like-count">3</span>
+                                    </button>
+                                    <button class="action-btn">💬 Balas</button>
+                                    <button class="action-btn">🚨 Laporkan</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+    
+                    <!-- Post 2 -->
+                    <div class="forum-post">
+                        <div class="post-header">
+                            <div class="forum-avatar">R</div>
+                            <div class="post-info">
+                                <h3>Rasine Aksar</h3>
+                                <div class="post-meta">5 Juni 2025 • 19:45</div>
+                            </div>
+                        </div>
+                        <div class="post-content">
+                            <p>Alhamdulillah, hari ini bisa mengikuti kajian yang sangat bermanfaat. Jazakumullahu khairan untuk semua yang telah berbagi ilmu.</p>
+                            <p>Materi hari ini tentang adab dalam bermuamalah. Ada yang mau sharing insight dari kajian yang pernah diikuti?</p>
+                        </div>
+                        <div class="post-actions">
+                            <button class="action-btn like-btn" data-likes="8">
+                                <span class="like-icon">👍</span>
+                                <span class="like-count">8</span>
+                            </button>
+                            <button class="action-btn reply-toggle-btn">
+                                💬 Balas
+                            </button>
+                            <button class="action-btn">
+                                🔗 Bagikan
+                            </button>
+                            <button class="action-btn">🚨 Laporkan</button>
+                        </div>
+    
+                        <!-- Reply Form -->
+                        <div class="reply-form">
+                            <textarea placeholder="Tulis balasan Anda..."></textarea>
+                            <div class="form-actions">
+                                <button class="reply-btn">Kirim</button>
+                                <button class="cancel-btn">Batal</button>
+                            </div>
+                        </div>
+    
+                        <!-- Replies -->
+                        <div class="replies">
+                            <div class="reply">
+                                <div class="reply-header">
+                                    <div class="reply-avatar">F</div>
+                                    <div class="reply-info">
+                                        <h4>Fatimah Az-Zahra</h4>
+                                        <div class="reply-meta">5 Juni 2025 • 20:15</div>
+                                    </div>
+                                </div>
+                                <div class="reply-content">
+                                    <p>Subhanallah, kebetulan kemarin saya juga mengikuti kajian serupa. Yang paling berkesan adalah tentang pentingnya kejujuran dalam berdagang dan bermuamalah.</p>
+                                </div>
+                                <div class="reply-actions">
+                                    <button class="action-btn like-btn" data-likes="4">
+                                        <span class="like-icon">👍</span>
+                                        <span class="like-count">4</span>
+                                    </button>
+                                    <button class="action-btn">💬 Balas</button>
+                                    <button class="action-btn">🚨 Laporkan</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+    
+                    <!-- Post 3 -->
+                    <div class="forum-post">
+                        <div class="post-header">
+                            <div class="forum-avatar">M</div>
+                            <div class="post-info">
+                                <h3>Muhammad Firdaus</h3>
+                                <div class="post-meta">4 Juni 2025 • 15:30</div>
+                            </div>
+                        </div>
+                        <div class="post-content">
+                            <p>Bismillah, mau sharing tentang pengalaman mengikuti program tahfidz. Alhamdulillah sudah menyelesaikan 5 juz. Mohon doa dari teman-teman agar bisa istiqomah.</p>
+                            <p>Ada tips untuk menjaga hafalan agar tidak mudah lupa?</p>
+                        </div>
+                        <div class="post-actions">
+                            <button class="action-btn like-btn" data-likes="15">
+                                <span class="like-icon">👍</span>
+                                <span class="like-count">15</span>
+                            </button>
+                            <button class="action-btn reply-toggle-btn">
+                                💬 Balas
+                            </button>
+                            <button class="action-btn">
+                                🔗 Bagikan
+                            </button>
+                            <button class="action-btn">🚨 Laporkan</button>
+                        </div>
+    
+                        <!-- Reply Form -->
+                        <div class="reply-form">
+                            <textarea placeholder="Tulis balasan Anda..."></textarea>
+                            <div class="form-actions">
+                                <button class="reply-btn">Kirim</button>
+                                <button class="cancel-btn">Batal</button>
+                            </div>
+                        </div>
+    
+                        <!-- Replies -->
+                        <div class="replies">
+                            <div class="reply">
+                                <div class="reply-header">
+                                    <div class="reply-avatar">U</div>
+                                    <div class="reply-info">
+                                        <h4>Ustadz Hasan</h4>
+                                        <div class="reply-meta">4 Juni 2025 • 16:00</div>
+                                    </div>
+                                </div>
+                                <div class="reply-content">
+                                    <p>Barakallahu fiik, semoga Allah mudahkan. Tips dari saya: konsisten muraja'ah setiap hari, walaupun sedikit. Yang penting istiqomah daripada banyak tapi tidak konsisten.</p>
+                                </div>
+                                <div class="reply-actions">
+                                    <button class="action-btn like-btn" data-likes="8">
+                                        <span class="like-icon">👍</span>
+                                        <span class="like-count">8</span>
+                                    </button>
+                                    <button class="action-btn">💬 Balas</button>
+                                    <button class="action-btn">🚨 Laporkan</button>
+                                </div>
+                            </div>
+    
+                            <div class="reply">
+                                <div class="reply-header">
+                                    <div class="reply-avatar">Z</div>
+                                    <div class="reply-info">
+                                        <h4>Zahra Amelia</h4>
+                                        <div class="reply-meta">4 Juni 2025 • 17:20</div>
+                                    </div>
+                                </div>
+                                <div class="reply-content">
+                                    <p>Masya Allah tabarakallah, semoga berkah hafalannya akhi. Saya juga sedang tahfidz, alhamdulillah baru 2 juz. Saling mendoakan ya 😊</p>
+                                </div>
+                                <div class="reply-actions">
+                                    <button class="action-btn like-btn" data-likes="6">
+                                        <span class="like-icon">👍</span>
+                                        <span class="like-count">6</span>
+                                    </button>
+                                    <button class="action-btn">💬 Balas</button>
+                                    <button class="action-btn">🚨 Laporkan</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+    
+                    <button class="show-more-btn">Muat Lebih Banyak Post</button>
+                </div>
+            </div>
+        </main>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <a href="index.html">
+                <h4 class="judul">Satu Langit</h4>
+            </a>
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h2 class="section-title">Info Kontak</h2>
+                     <div class="footer-menu">
+                       <ul class="menu-atas">
+                           <li><a href="https://wa.me/6281234567890" target="_blank"><p>📞 +62 812-3456-7890</p></a></li>
+                           <li><a href="info@satulangit.id" target="_blank"><p>✉️ info@satulangit.id</p></a></li>
+                       </ul>
+                       <ul class="menu-bawah">
+                           <li><a href="index.html" target="_blank"><p>🌐 www.satulangit.id</p></a></li>
+                       </ul>
+                     </div>
+                </div>
+                <div class="footer-section">
+                    <h2 class="section-title">Sosial Media</h2>
+                    <div class="footer-menu social-media">
+                      <ul>
+                        <a href="https://instagram.com" target="_blank" title="Instagram">
+                          <div class="social-icon">
+                            <img src="images/socialmedia1.png" alt="Social Media">
+                          </div>
+                        </a>
+                        <a href="https://facebook.com" target="_blank" title="Facebook">
+                          <div class="social-icon">
+                            <img src="images/socialmedia2.png" alt="Social Media">
+                          </div>
+                        </a>
+                        <a href="https://youtube.com" target="_blank" title="YouTube">
+                          <div class="social-icon">
+                            <img src="images/socialmedia3.png" alt="Social Media">
+                          </div>
+                        </a>
+                        <a href="https://x.com" target="_blank" title="X">
+                          <div class="social-icon">
+                            <img src="images/socialmedia4.png" alt="Social Media">
+                          </div>
+                        </a>
+                      </ul>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h2 class="section-title">Navigasi Cepat</h2>
+                    <div class="footer-menu">
+                      <ul class="menu-atas">
+                          <li><a href="index.html"><span>B</span><span>e</span><span>r</span><span>a</span><span>n</span><span>d</span><span>a</span></a></li>
+                          <li><a href="index.html#tentang"><span>T</span><span>e</span><span>n</span><span>t</span><span>a</span><span>n</span><span>g</span></a></li>
+                          <li><a href="index.html#kegiatan"><span>K</span><span>e</span><span>g</span><span>i</span><span>a</span><span>t</span><span>a</span><span>n</span></a></li>
+                      </ul>
+                      <ul class="menu-bawah">
+                          <li><a href="index.html#artikel"><span>A</span><span>r</span><span>t</span><span>i</span><span>k</span><span>e</span><span>l</span></a></li>
+                          <li><a href="index.html#forum"><span>F</span><span>o</span><span>r</span><span>u</span><span>m</span></a></li>
+                      </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>Copyright ©2025 Satu Langit</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Custom Alert Popup -->
+    <div id="customAlert" class="custom-alert">
+        <div class="alert-content">
+            <span class="close-alert">&times;</span>
+            <p id="alertMessage"></p>
+        </div>
+    </div>
+
+    <script>
+        // Handle new post form
+        document.getElementById('newPostForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const authorName = document.getElementById('authorName').value;
+            const postContent = document.getElementById('postContent').value;
+            
+            if (authorName && postContent) {
+                // Create new post element
+                const newPost = createNewPost(authorName, postContent);
+                
+                // Add to forum container
+                const forumContainer = document.querySelector('.forum-container');
+                forumContainer.insertBefore(newPost, forumContainer.firstChild);
+                
+                // Clear form
+                document.getElementById('authorName').value = '';
+                document.getElementById('postContent').value = '';
+                
+                // Tampilkan custom alert
+                showAlert('Post berhasil dikirim!');
+            }
+        });
+
+        // Ganti semua instance toLocaleDateString() dengan fungsi baru
+        function formatTanggal(date) {
+        const bulan = [
+            'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+            'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
+        ];
+        
+        const tanggal = date.getDate();
+        const namaBulan = bulan[date.getMonth()];
+        const tahun = date.getFullYear();
+        
+        return `${tanggal} ${namaBulan} ${tahun}`;
+        }
+
+        function createNewPost(authorName, content) {
+            const postDiv = document.createElement('div');
+            postDiv.className = 'forum-post';
+            
+            const now = new Date();
+            const timeString = formatTanggal(now) + ' • ' + now.toLocaleTimeString('id-ID', {hour: '2-digit', minute: '2-digit'});
+            const avatar = authorName.charAt(0).toUpperCase();
+            
+            postDiv.innerHTML = `
+                <div class="post-header">
+                    <div class="profil">
+                        <img src="images/foto-profil.jpg" alt="Profil">
+                    </div>
+                    <div class="post-info">
+                        <h3>${authorName}</h3>
+                        <div class="post-meta">${timeString}</div>
+                    </div>
+                </div>
+                <div class="post-content">
+                    <p>${content}</p>
+                </div>
+                <div class="post-actions">
+                    <button class="action-btn like-btn" data-likes="0">
+                        <span class="like-icon">👍</span>
+                        <span class="like-count">0</span>
+                    </button>
+                    <button class="action-btn reply-toggle-btn">
+                        💬 Balas
+                    </button>
+                    <button class="action-btn">
+                        🔗 Bagikan
+                    </button>
+                    <button class="action-btn">🚨 Laporkan</button>
+                </div>
+                
+                <div class="reply-form">
+                    <textarea placeholder="Tulis balasan Anda..."></textarea>
+                    <div class="form-actions">
+                        <button class="reply-btn">Kirim</button>
+                        <button class="cancel-btn">Batal</button>
+                    </div>
+                </div>
+
+                <div class="replies"></div>
+            `;
+            
+            return postDiv;
+        }
+
+        // Handle like buttons
+        document.addEventListener('click', function(e) {
+            if (e.target.closest('.like-btn')) {
+                const button = e.target.closest('.like-btn');
+                const likeCount = button.querySelector('.like-count');
+                let currentLikes = parseInt(button.dataset.likes);
+                
+                if (button.classList.contains('liked')) {
+                    currentLikes--;
+                    button.classList.remove('liked');
+                } else {
+                    currentLikes++;
+                    button.classList.add('liked');
+                }
+                
+                button.dataset.likes = currentLikes;
+                likeCount.textContent = currentLikes;
+            }
+        });
+
+        // Handle reply toggle
+        document.addEventListener('click', function(e) {
+            if (e.target.closest('.reply-toggle-btn')) {
+                const post = e.target.closest('.forum-post');
+                const replyForm = post.querySelector('.reply-form');
+                replyForm.classList.toggle('show');
+                
+                if (replyForm.classList.contains('show')) {
+                    replyForm.querySelector('textarea').focus();
+                }
+            }
+        });
+
+        // Handle reply form buttons
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('reply-btn')) {
+                const replyForm = e.target.closest('.reply-form');
+                const textarea = replyForm.querySelector('textarea');
+                const replyContent = textarea.value.trim();
+                
+                if (replyContent) {
+                    // Create new reply
+                    const newReply = createNewReply('Anda', replyContent);
+                    
+                    // Add to replies section
+                    const post = replyForm.closest('.forum-post');
+                    const repliesSection = post.querySelector('.replies');
+                    repliesSection.appendChild(newReply);
+                    
+                    // Clear and hide form
+                    textarea.value = '';
+                    replyForm.classList.remove('show');
+                    
+                    // Tampilkan custom alert
+                    showAlert('Balasan berhasil dikirim!');
+                }
+            }
+            
+            if (e.target.classList.contains('cancel-btn')) {
+                const replyForm = e.target.closest('.reply-form');
+                replyForm.querySelector('textarea').value = '';
+                replyForm.classList.remove('show');
+            }
+        });
+
+        function createNewReply(authorName, content) {
+           const replyDiv = document.createElement('div');
+           replyDiv.className = 'reply';
+           
+           const now = new Date();
+           const timeString = formatTanggal(now) + ' • ' + now.toLocaleTimeString('id-ID', {hour: '2-digit', minute: '2-digit'});
+           const avatar = authorName.charAt(0).toUpperCase();
+           
+           replyDiv.innerHTML = `
+               <div class="reply-header">
+                   <div class="profil">
+                       <img src="images/foto-profil.jpg" alt="Profil">
+                   </div>
+                   <div class="reply-info">
+                       <h4>${authorName}</h4>
+                       <div class="reply-meta">${timeString}</div>
+                   </div>
+               </div>
+               <div class="reply-content">
+                   <p>${content}</p>
+               </div>
+               <div class="reply-actions">
+                   <button class="action-btn like-btn" data-likes="0">
+                       <span class="like-icon">👍</span>
+                       <span class="like-count">0</span>
+                   </button>
+                   <button class="action-btn">💬 Balas</button>
+                   <button class="action-btn">🚨 Laporkan</button>
+               </div>
+           `;
+           
+           return replyDiv;
+       }
+
+       // Handle show more button
+       document.addEventListener('click', function(e) {
+           if (e.target.classList.contains('show-more-btn')) {
+               // Simulate loading more posts
+               const additionalPosts = [
+                   {
+                       author: 'Abdullah Rahman',
+                       content: 'Subhanallah, semalam mimpi bertemu Rasulullah SAW. Alhamdulillah hati terasa sangat tenang. Bagaimana pandangan teman-teman tentang mimpi yang baik?',
+                       date: '3 Juni 2025 • 22:15',
+                       likes: 6
+                   },
+                   {
+                       author: 'Khadijah Salsabila',
+                       content: 'Mau sharing tentang program sedekah subuh yang rutin saya lakukan. Alhamdulillah banyak berkah yang dirasakan. Ada yang mau ikut program serupa?',
+                       date: '2 Juni 2025 • 06:30',
+                       likes: 12
+                   }
+               ];
+
+               const forumContainer = document.querySelector('.forum-container');
+               const showMoreBtn = document.querySelector('.show-more-btn');
+
+               additionalPosts.forEach(post => {
+                   const newPost = createAdditionalPost(post);
+                   forumContainer.insertBefore(newPost, showMoreBtn);
+               });
+
+               // Hide button after loading
+               showMoreBtn.style.display = 'none';
+           }
+       });
+
+       function createAdditionalPost(postData) {
+           const postDiv = document.createElement('div');
+           postDiv.className = 'forum-post';
+           const avatar = postData.author.charAt(0).toUpperCase();
+           
+           postDiv.innerHTML = `
+               <div class="post-header">
+                   <div class="forum-avatar">${avatar}</div>
+                   <div class="post-info">
+                       <h3>${postData.author}</h3>
+                       <div class="post-meta">${postData.date}</div>
+                   </div>
+               </div>
+               <div class="post-content">
+                   <p>${postData.content}</p>
+               </div>
+               <div class="post-actions">
+                   <button class="action-btn like-btn" data-likes="${postData.likes}">
+                       <span class="like-icon">👍</span>
+                       <span class="like-count">${postData.likes}</span>
+                   </button>
+                   <button class="action-btn reply-toggle-btn">
+                       💬 Balas
+                   </button>
+                   <button class="action-btn">
+                       🔗 Bagikan
+                   </button>
+                   <button class="action-btn">🚨 Laporkan</button>
+               </div>
+               
+               <div class="reply-form">
+                   <textarea placeholder="Tulis balasan Anda..."></textarea>
+                   <div class="form-actions">
+                       <button class="reply-btn">Kirim</button>
+                       <button class="cancel-btn">Batal</button>
+                   </div>
+               </div>
+
+               <div class="replies"></div>
+           `;
+           
+           return postDiv;
+       }
+
+       // Smooth scroll for navigation links
+       document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+           anchor.addEventListener('click', function (e) {
+               e.preventDefault();
+               const target = document.querySelector(this.getAttribute('href'));
+               if (target) {
+                   target.scrollIntoView({
+                       behavior: 'smooth'
+                   });
+               }
+           });
+       });
+
+       // Header background change on scroll
+       window.addEventListener('scroll', function() {
+           const header = document.querySelector('.header');
+           if (window.scrollY > 100) {
+               header.style.background = 'rgba(255, 255, 255, 0.98)';
+           } else {
+               header.style.background = 'rgba(255, 255, 255, 0.95)';
+           }
+       });
+
+       // Auto-resize textarea
+       document.addEventListener('input', function(e) {
+           if (e.target.tagName === 'TEXTAREA') {
+               e.target.style.height = 'auto';
+               e.target.style.height = e.target.scrollHeight + 'px';
+           }
+       });
+
+       // Form validation
+       document.addEventListener('input', function(e) {
+           if (e.target.type === 'text' || e.target.tagName === 'TEXTAREA') {
+               if (e.target.value.trim()) {
+                   e.target.style.borderColor = '#667eea';
+               } else {
+                   e.target.style.borderColor = '#e1e1e1';
+               }
+           }
+       });
+
+       // Add animation on page load
+       window.addEventListener('load', function() {
+           const posts = document.querySelectorAll('.forum-post');
+           posts.forEach((post, index) => {
+               setTimeout(() => {
+                   post.style.opacity = '0';
+                   post.style.transform = 'translateY(30px)';
+                   post.style.transition = 'all 0.5s ease';
+                   
+                   setTimeout(() => {
+                       post.style.opacity = '1';
+                       post.style.transform = 'translateY(0)';
+                   }, 100);
+               }, index * 200);
+           });
+       });
+
+       // Fungsi untuk menampilkan custom alert
+        function showAlert(message) {
+            const alert = document.getElementById('customAlert');
+            const alertMessage = document.getElementById('alertMessage');
+            
+            alertMessage.textContent = message;
+            alert.style.display = 'flex';
+            
+            // Auto close setelah 3 detik
+            setTimeout(() => {
+                alert.style.display = 'none';
+            }, 3000);
+        }
+
+        // Fungsi untuk menutup alert
+        document.querySelector('.close-alert').addEventListener('click', function() {
+            document.getElementById('customAlert').style.display = 'none';
+        });
+
+        // Tutup alert ketika klik di luar konten
+        document.getElementById('customAlert').addEventListener('click', function(e) {
+            if (e.target === this) {
+                this.style.display = 'none';
+            }
+        });
+   </script>
+</body>
+</html>

@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Donasi - Satu Langit</title>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Kaushan+Script&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        /* Main Content */
+        .main-content {
+          padding-top: 100px;
+          min-height: 100vh;
+        }
+
+        .page-title {
+          font-family: 'Kaushan Script', cursive;
+          text-align: center;
+          font-size: 3rem;
+          color: white;
+          margin-bottom: 3rem;
+          text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .donasi-intro {
+          background: rgba(240, 240, 240, 0.6);
+          backdrop-filter: blur(10px);
+          border-radius: 20px;
+          padding: 2rem;
+          margin-bottom: 3rem;
+          text-align: center;
+          border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .donasi-intro h3 {
+          color: 555555;
+          font-size: 1.5rem;
+          margin-bottom: 1rem;
+        }
+
+        .donasi-intro p {
+          color: #555555;
+          font-size: 1.1rem;
+          line-height: 1.8;
+        }
+
+        .donasi-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+          gap: 2rem;
+        }
+
+        .donasi-card {
+          background: rgba(240, 240, 240, 0.4);
+          backdrop-filter: blur(10px);
+          border-radius: 20px;
+          padding: 2rem;
+          border: 1px solid rgba(255, 255, 255, 0.2);
+          transition: all 0.3s ease;
+          position: relative;
+          overflow: hidden;
+        }
+
+        .donasi-card:hover {
+          transform: translateY(-5px);
+          box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .donasi-card::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          height: 4px;
+          background: linear-gradient(90deg, #67B3E5, #76CCE3);
+        }
+
+        .donasi-card img {
+          width: 100%;
+          height: 250px;
+          object-fit: cover;
+          object-position: top;
+          border-radius: 15px;
+          margin-bottom: 1.5rem;
+        }
+
+        .donasi-card h4 {
+          color: white;
+          font-size: 1.3rem;
+          margin-bottom: 1rem;
+        }
+
+        .donasi-card p {
+          color: rgba(255, 255, 255, 0.9);
+          margin-bottom: 1.5rem;
+          line-height: 1.6;
+        }
+
+        .progress-info {
+          margin-bottom: 1.5rem;
+        }
+
+        .progress-bar {
+          background: rgba(255, 255, 255, 0.2);
+          border-radius: 10px;
+          height: 10px;
+          overflow: hidden;
+          margin-bottom: 0.5rem;
+        }
+
+        .progress-fill {
+          height: 100%;
+          background: linear-gradient(90deg, #67B3E5, #76CCE3);
+          border-radius: 10px;
+          transition: width 0.3s ease;
+        }
+
+        .progress-text {
+          display: flex;
+          justify-content: space-between;
+          color: rgba(255, 255, 255, 0.8);
+          font-size: 0.9rem;
+        }
+
+        .donasi-btn {
+          background: linear-gradient(45deg, #67B3E5, #76CCE3);
+          color: white;
+          padding: 0.8rem 2rem;
+          border: none;
+          border-radius: 25px;
+          font-weight: 600;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          width: 100%;
+          font-size: 1rem;
+        }
+
+        .donasi-btn:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .donasi-form {
+          background: rgba(240, 240, 240, 0.4);
+          backdrop-filter: blur(10px);
+          border-radius: 20px;
+          padding: 2rem;
+          border: 1px solid rgba(255, 255, 255, 0.2);
+          max-width: 600px;
+          margin: 0 auto;
+          margin-top: 3rem;
+          scroll-margin-top: 80px;
+        }
+
+        .donasi-form h3 {
+          color: white;
+          text-align: center;
+          margin-bottom: 2rem;
+          font-size: 1.5rem;
+        }
+
+        .form-group {
+          margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+          display: block;
+          color: white;
+          margin-bottom: 0.5rem;
+          font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+          width: 100%;
+          padding: 0.8rem;
+          border: 1px solid rgba(255, 255, 255, 0.3);
+          border-radius: 10px;
+          background: rgba(240, 240, 240, 0.4);
+          color: white;
+          font-family: 'Poppins', sans-serif;
+        }
+
+        .form-group option {
+          color: #555555;
+        }
+
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+          color: rgba(255, 255, 255, 0.6);
+        }
+
+        .amount-buttons {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 1rem;
+          margin-bottom: 1rem;
+        }
+
+        .amount-btn {
+          background: rgba(240, 240, 240, 0.4);
+          color: white;
+          border: 1px solid rgba(255, 255, 255, 0.3);
+          padding: 0.8rem;
+          border-radius: 10px;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          font-weight: 500;
+        }
+
+        .amount-btn:hover,
+        .amount-btn.active {
+          background: linear-gradient(45deg, #67B3E5, #76CCE3);
+          border-color: transparent;
+        }
+
+        .submit-btn {
+          background: linear-gradient(45deg, #67B3E5, #76CCE3);
+          color: white;
+          padding: 1rem 2rem;
+          border: none;
+          border-radius: 25px;
+          font-weight: 600;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          width: 100%;
+          font-size: 1.1rem;
+          margin-top: 1rem;
+        }
+
+        .submit-btn:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+          .donasi-grid {
+            grid-template-columns: 1fr;
+          }
+          
+          .amount-buttons {
+            grid-template-columns: repeat(2, 1fr);
+          }
+          
+          .page-title {
+            font-size: 2rem;
+          }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="nav-container">
+            <a href="index.html">
+                <div class="logo">Satu Langit</div>
+            </a>
+            <nav>
+                <ul class="nav-menu">
+                    <li><a href="index.html"><span>B</span><span>e</span><span>r</span><span>a</span><span>n</span><span>d</span><span>a</span></a></li>
+                    <li><a href="index.html#tentang"><span>T</span><span>e</span><span>n</span><span>t</span><span>a</span><span>n</span><span>g</span></a></li>
+                    <li><a href="index.html#kegiatan"><span>K</span><span>e</span><span>g</span><span>i</span><span>a</span><span>t</span><span>a</span><span>n</span></a></li>
+                    <li><a href="index.html#artikel"><span>A</span><span>r</span><span>t</span><span>i</span><span>k</span><span>e</span><span>l</span></a></li>
+                    <li><a href="index.html#forum"><span>F</span><span>o</span><span>r</span><span>u</span><span>m</span></a></li>
+                </ul>
+            </nav>
+            <a href="index.html" class="back-btn">← Kembali</a>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <section class="background">
+        <main class="main-content">
+            <div class="container">
+                <h1 class="page-title">Donasi</h1>
+                
+                <div class="donasi-intro">
+                    <h3>Berbagi Kebaikan Bersama</h3>
+                    <p>Setiap donasi yang Anda berikan adalah amanah yang akan kami salurkan dengan penuh tanggung jawab. Mari bersama-sama membantu sesama dan meraih berkah dari Allah SWT.</p>
+                </div>
+    
+                <div class="donasi-grid">
+                    <div class="donasi-card">
+                        <img src="images/donasi1.jpg" alt="Bantuan Pendidikan">
+                        <h4>Bantuan Pendidikan Anak Yatim</h4>
+                        <p>Membantu biaya pendidikan anak-anak yatim agar dapat melanjutkan sekolah dan meraih masa depan yang cerah.</p>
+                        <div class="progress-info">
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 65%"></div>
+                            </div>
+                            <div class="progress-text">
+                                <span>Terkumpul: Rp 32.500.000</span>
+                                <span>Target: Rp 50.000.000</span>
+                            </div>
+                        </div>
+                        <button class="donasi-btn" onclick="selectProgram('pendidikan')">Donasi Sekarang</button>
+                    </div>
+    
+                    <div class="donasi-card">
+                        <img src="images/donasi2.jpg" alt="Bantuan Pangan">
+                        <h4>Bantuan Pangan untuk Keluarga Dhuafa</h4>
+                        <p>Menyediakan paket sembako dan kebutuhan pokok untuk keluarga-keluarga yang membutuhkan.</p>
+                        <div class="progress-info">
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 80%"></div>
+                            </div>
+                            <div class="progress-text">
+                                <span>Terkumpul: Rp 24.000.000</span>
+                                <span>Target: Rp 30.000.000</span>
+                            </div>
+                        </div>
+                        <button class="donasi-btn" onclick="selectProgram('pangan')">Donasi Sekarang</button>
+                    </div>
+    
+                    <div class="donasi-card">
+                        <img src="images/donasi3.jpg" alt="Bantuan Kesehatan">
+                        <h4>Bantuan Kesehatan dan Pengobatan</h4>
+                        <p>Membantu biaya pengobatan dan perawatan kesehatan untuk masyarakat yang tidak mampu.</p>
+                        <div class="progress-info">
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 45%"></div>
+                            </div>
+                            <div class="progress-text">
+                                <span>Terkumpul: Rp 18.000.000</span>
+                                <span>Target: Rp 40.000.000</span>
+                            </div>
+                        </div>
+                        <button class="donasi-btn" onclick="selectProgram('kesehatan')">Donasi Sekarang</button>
+                    </div>
+    
+                    <div class="donasi-card">
+                        <img src="images/donasi4.jpg" alt="Pembangunan Masjid">
+                        <h4>Pembangunan Masjid</h4>
+                        <p>Ikut serta dalam pembangunan rumah ibadah untuk memperkuat silaturahmi umat.</p>
+                        <div class="progress-info">
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 30%"></div>
+                            </div>
+                            <div class="progress-text">
+                                <span>Terkumpul: Rp 75.000.000</span>
+                                <span>Target: Rp 250.000.000</span>
+                            </div>
+                        </div>
+                        <button class="donasi-btn" onclick="selectProgram('masjid')">Donasi Sekarang</button>
+                    </div>
+                </div>
+    
+                <!-- Form Donasi -->
+                <div class="donasi-form" id="donasiForm" style="display: none;">
+                    <h3>Form Donasi</h3>
+                    <form onsubmit="submitDonasi(event)">
+                        <div class="form-group">
+                            <label for="program">Program Donasi</label>
+                            <select id="program" required>
+                                <option value="">Pilih Program</option>
+                                <option value="pendidikan">Bantuan Pendidikan Anak Yatim</option>
+                                <option value="pangan">Bantuan Pangan untuk Keluarga Dhuafa</option>
+                                <option value="kesehatan">Bantuan Kesehatan dan Pengobatan</option>
+                                <option value="masjid">Pembangunan Masjid</option>
+                            </select>
+                        </div>
+    
+                        <div class="form-group">
+                            <label>Pilih Nominal Donasi</label>
+                            <div class="amount-buttons">
+                                <button type="button" class="amount-btn" onclick="selectAmount(50000)">Rp 50.000</button>
+                                <button type="button" class="amount-btn" onclick="selectAmount(100000)">Rp 100.000</button>
+                                <button type="button" class="amount-btn" onclick="selectAmount(250000)">Rp 250.000</button>
+                                <button type="button" class="amount-btn" onclick="selectAmount(500000)">Rp 500.000</button>
+                                <button type="button" class="amount-btn" onclick="selectAmount(1000000)">Rp 1.000.000</button>
+                                <button type="button" class="amount-btn" onclick="selectAmount(0)">Lainnya</button>
+                            </div>
+                            <input type="number" id="amount" placeholder="Masukkan nominal (Rp)" required min="10000">
+                        </div>
+    
+                        <div class="form-group">
+                            <label for="name">Nama Lengkap</label>
+                            <input type="text" id="name" placeholder="Masukkan nama lengkap" required>
+                        </div>
+    
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" placeholder="Masukkan email" required>
+                        </div>
+    
+                        <div class="form-group">
+                            <label for="phone">Nomor Telepon</label>
+                            <input type="tel" id="phone" placeholder="Masukkan nomor telepon" required>
+                        </div>
+    
+                        <div class="form-group">
+                            <label for="message">Pesan (Opsional)</label>
+                            <textarea id="message" rows="4" placeholder="Tinggalkan pesan atau doa"></textarea>
+                        </div>
+    
+                        <button type="submit" class="submit-btn">Lanjutkan Pembayaran</button>
+                    </form>
+                </div>
+            </div>
+        </main>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <a href="index.html">
+                <h4 class="judul">Satu Langit</h4>
+            </a>
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h2 class="section-title">Info Kontak</h2>
+                     <div class="footer-menu">
+                       <ul class="menu-atas">
+                           <li><a href="https://wa.me/6281234567890" target="_blank"><p>📞 +62 812-3456-7890</p></a></li>
+                           <li><a href="info@satulangit.id" target="_blank"><p>✉️ info@satulangit.id</p></a></li>
+                       </ul>
+                       <ul class="menu-bawah">
+                           <li><a href="index.html" target="_blank"><p>🌐 www.satulangit.id</p></a></li>
+                       </ul>
+                     </div>
+                </div>
+                <div class="footer-section">
+                    <h2 class="section-title">Sosial Media</h2>
+                    <div class="footer-menu social-media">
+                      <ul>
+                        <a href="https://instagram.com" target="_blank" title="Instagram">
+                          <div class="social-icon">
+                            <img src="images/socialmedia1.png" alt="Social Media">
+                          </div>
+                        </a>
+                        <a href="https://facebook.com" target="_blank" title="Facebook">
+                          <div class="social-icon">
+                            <img src="images/socialmedia2.png" alt="Social Media">
+                          </div>
+                        </a>
+                        <a href="https://youtube.com" target="_blank" title="YouTube">
+                          <div class="social-icon">
+                            <img src="images/socialmedia3.png" alt="Social Media">
+                          </div>
+                        </a>
+                        <a href="https://x.com" target="_blank" title="X">
+                          <div class="social-icon">
+                            <img src="images/socialmedia4.png" alt="Social Media">
+                          </div>
+                        </a>
+                      </ul>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h2 class="section-title">Navigasi Cepat</h2>
+                    <div class="footer-menu">
+                      <ul class="menu-atas">
+                          <li><a href="index.html"><span>B</span><span>e</span><span>r</span><span>a</span><span>n</span><span>d</span><span>a</span></a></li>
+                          <li><a href="index.html#tentang"><span>T</span><span>e</span><span>n</span><span>t</span><span>a</span><span>n</span><span>g</span></a></li>
+                          <li><a href="index.html#kegiatan"><span>K</span><span>e</span><span>g</span><span>i</span><span>a</span><span>t</span><span>a</span><span>n</span></a></li>
+                      </ul>
+                      <ul class="menu-bawah">
+                          <li><a href="index.html#artikel"><span>A</span><span>r</span><span>t</span><span>i</span><span>k</span><span>e</span><span>l</span></a></li>
+                          <li><a href="index.html#forum"><span>F</span><span>o</span><span>r</span><span>u</span><span>m</span></a></li>
+                      </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>Copyright ©2025 Satu Langit</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function selectProgram(program) {
+            const programSelect = document.getElementById('program');
+            programSelect.value = program;
+            
+            const form = document.getElementById('donasiForm');
+            form.style.display = 'block';
+            form.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function selectAmount(amount) {
+            // Remove active class from all buttons
+            document.querySelectorAll('.amount-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Add active class to clicked button
+            event.target.classList.add('active');
+            
+            // Set amount in input
+            const amountInput = document.getElementById('amount');
+            if (amount === 0) {
+                amountInput.value = '';
+                amountInput.focus();
+            } else {
+                amountInput.value = amount;
+            }
+        }
+
+        function submitDonasi(event) {
+            event.preventDefault();
+            
+            const formData = {
+                program: document.getElementById('program').value,
+                amount: document.getElementById('amount').value,
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                message: document.getElementById('message').value
+            };
+
+            // Simulate payment process
+            alert(`Terima kasih ${formData.name}! Donasi sebesar Rp ${parseInt(formData.amount).toLocaleString('id-ID')} untuk program ${formData.program} akan diproses. Kami akan menghubungi Anda segera untuk konfirmasi pembayaran.`);
+            
+            // Reset form
+            event.target.reset();
+            document.querySelectorAll('.amount-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+        }
+    </script>
+</body>
+</html>

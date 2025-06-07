@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Baca Quran - Satu Langit</title>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Kaushan+Script&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        /* Main Content */
+        .main-content {
+          padding-top: 100px;
+          min-height: 100vh;
+        }
+
+        .page-title {
+            font-family: 'Kaushan Script', cursive;
+            text-align: center;
+            font-size: 3rem;
+            color: white;
+            margin-bottom: 3rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        /* Surah Selection */
+        .surah-selection {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .selection-title {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: #555555;
+            text-align: center;
+        }
+
+        .surah-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .surah-card {
+            background: linear-gradient(45deg, #67B3E5, #76CCE3);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .surah-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .surah-card:hover::before {
+            left: 100%;
+        }
+
+        .surah-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+        }
+
+        .surah-number {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .surah-name {
+            font-size: 1.1rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .surah-meaning {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            font-style: italic;
+        }
+
+        /* Quran Reader */
+        .quran-reader {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            display: none;
+        }
+
+        .reader-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .current-surah {
+            font-size: 1.8rem;
+            color: #555555;
+            margin-bottom: 0.5rem;
+        }
+
+        .surah-info {
+            color: #888;
+            font-style: italic;
+        }
+
+        .ayah-container {
+            max-height: 500px;
+            overflow-y: auto;
+            padding: 1rem;
+        }
+
+        .ayah {
+            background: #f9f9f9;
+            margin-bottom: 1.5rem;
+            padding: 1.5rem;
+            border-radius: 15px;
+            border-left: 4px solid #67B3E5;
+            transition: all 0.3s ease;
+        }
+
+        .ayah:hover {
+            background: #f0f0f0;
+            transform: translateX(5px);
+        }
+
+        .ayah-number {
+            background: linear-gradient(45deg, #67B3E5, #76CCE3);
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .ayah-arabic {
+            font-family: 'Amiri', serif;
+            font-size: 1.8rem;
+            line-height: 2.2;
+            text-align: right;
+            margin-bottom: 1rem;
+            color: #333;
+            direction: rtl;
+        }
+
+        .ayah-translation {
+            font-size: 1rem;
+            color: #555;
+            line-height: 1.6;
+            font-style: italic;
+        }
+
+        .reader-controls {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 2px solid #f0f0f0;
+        }
+
+        .control-btn {
+            background: linear-gradient(45deg, #67B3E5, #76CCE3);
+            color: white;
+            border: none;
+            padding: 0.7rem 1.5rem;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .control-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .control-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* Search */
+        .search-container {
+            margin-bottom: 2rem;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #ddd;
+            border-radius: 25px;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .search-input:focus {
+            border-color: #67B3E5;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .page-title {
+                font-size: 2rem;
+            }
+            
+            .surah-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .ayah-arabic {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="nav-container">
+            <a href="index.html">
+                <div class="logo">Satu Langit</div>
+            </a>
+            <nav>
+                <ul class="nav-menu">
+                    <li><a href="index.html"><span>B</span><span>e</span><span>r</span><span>a</span><span>n</span><span>d</span><span>a</span></a></li>
+                    <li><a href="index.html#tentang"><span>T</span><span>e</span><span>n</span><span>t</span><span>a</span><span>n</span><span>g</span></a></li>
+                    <li><a href="index.html#kegiatan"><span>K</span><span>e</span><span>g</span><span>i</span><span>a</span><span>t</span><span>a</span><span>n</span></a></li>
+                    <li><a href="index.html#artikel"><span>A</span><span>r</span><span>t</span><span>i</span><span>k</span><span>e</span><span>l</span></a></li>
+                    <li><a href="index.html#forum"><span>F</span><span>o</span><span>r</span><span>u</span><span>m</span></a></li>
+                </ul>
+            </nav>
+            <a href="index.html" class="back-btn">← Kembali</a>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <section class="background">
+        <main class="main-content">
+            <div class="container">
+                <h1 class="page-title">Baca Al-Qur'an</h1>
+                
+                <!-- Surah Selection -->
+                <div class="surah-selection" id="surahSelection">
+                    <h2 class="selection-title">Pilih Surah</h2>
+                    
+                    <div class="search-container">
+                        <input type="text" class="search-input" placeholder="Cari surah..." id="searchInput">
+                    </div>
+                    
+                    <div class="surah-grid" id="surahGrid">
+                        <!-- Surah cards will be populated by JavaScript -->
+                    </div>
+                </div>
+    
+                <!-- Quran Reader -->
+                <div class="quran-reader" id="quranReader">
+                    <div class="reader-header">
+                        <h2 class="current-surah" id="currentSurah"></h2>
+                        <p class="surah-info" id="surahInfo"></p>
+                    </div>
+                    
+                    <div class="ayah-container" id="ayahContainer">
+                        <!-- Ayahs will be populated by JavaScript -->
+                    </div>
+                    
+                    <div class="reader-controls">
+                        <button class="control-btn" onclick="closeSurah()">← Pilih Surah Lain</button>
+                        <button class="control-btn" onclick="scrollToTop()">↑ Ke Atas</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <a href="index.html">
+                <h4 class="judul">Satu Langit</h4>
+            </a>
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h2 class="section-title">Info Kontak</h2>
+                     <div class="footer-menu">
+                       <ul class="menu-atas">
+                           <li><a href="https://wa.me/6281234567890" target="_blank"><p>📞 +62 812-3456-7890</p></a></li>
+                           <li><a href="info@satulangit.id" target="_blank"><p>✉️ info@satulangit.id</p></a></li>
+                       </ul>
+                       <ul class="menu-bawah">
+                           <li><a href="index.html" target="_blank"><p>🌐 www.satulangit.id</p></a></li>
+                       </ul>
+                     </div>
+                </div>
+                <div class="footer-section">
+                    <h2 class="section-title">Sosial Media</h2>
+                    <div class="footer-menu social-media">
+                      <ul>
+                        <a href="https://instagram.com" target="_blank" title="Instagram">
+                          <div class="social-icon">
+                            <img src="images/socialmedia1.png" alt="Social Media">
+                          </div>
+                        </a>
+                        <a href="https://facebook.com" target="_blank" title="Facebook">
+                          <div class="social-icon">
+                            <img src="images/socialmedia2.png" alt="Social Media">
+                          </div>
+                        </a>
+                        <a href="https://youtube.com" target="_blank" title="YouTube">
+                          <div class="social-icon">
+                            <img src="images/socialmedia3.png" alt="Social Media">
+                          </div>
+                        </a>
+                        <a href="https://x.com" target="_blank" title="X">
+                          <div class="social-icon">
+                            <img src="images/socialmedia4.png" alt="Social Media">
+                          </div>
+                        </a>
+                      </ul>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h2 class="section-title">Navigasi Cepat</h2>
+                    <div class="footer-menu">
+                      <ul class="menu-atas">
+                          <li><a href="index.html"><span>B</span><span>e</span><span>r</span><span>a</span><span>n</span><span>d</span><span>a</span></a></li>
+                          <li><a href="index.html#tentang"><span>T</span><span>e</span><span>n</span><span>t</span><span>a</span><span>n</span><span>g</span></a></li>
+                          <li><a href="index.html#kegiatan"><span>K</span><span>e</span><span>g</span><span>i</span><span>a</span><span>t</span><span>a</span><span>n</span></a></li>
+                      </ul>
+                      <ul class="menu-bawah">
+                          <li><a href="index.html#artikel"><span>A</span><span>r</span><span>t</span><span>i</span><span>k</span><span>e</span><span>l</span></a></li>
+                          <li><a href="index.html#forum"><span>F</span><span>o</span><span>r</span><span>u</span><span>m</span></a></li>
+                      </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>Copyright ©2025 Satu Langit</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Sample Quran data (in real implementation, this would come from an API)
+        const quranData = {
+            1: {
+                name: "Al-Fatihah",
+                meaning: "Pembuka",
+                ayahs: [
+                    {
+                        number: 1,
+                        arabic: "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ",
+                        translation: "Dengan nama Allah Yang Maha Pengasih, Maha Penyayang."
+                    },
+                    {
+                        number: 2,
+                        arabic: "الْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ",
+                        translation: "Segala puji bagi Allah, Tuhan seluruh alam."
+                    },
+                    {
+                        number: 3,
+                        arabic: "الرَّحْمَٰنِ الرَّحِيمِ",
+                        translation: "Yang Maha Pengasih, Maha Penyayang."
+                    },
+                    {
+                        number: 4,
+                        arabic: "مَالِكِ يَوْمِ الدِّينِ",
+                        translation: "Pemilik hari pembalasan."
+                    },
+                    {
+                        number: 5,
+                        arabic: "إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ",
+                        translation: "Hanya kepada Engkaulah kami menyembah dan hanya kepada Engkaulah kami mohon pertolongan."
+                    },
+                    {
+                        number: 6,
+                        arabic: "اهْدِنَا الصِّرَاطَ الْمُسْتَقِيمَ",
+                        translation: "Tunjukilah kami jalan yang lurus."
+                    },
+                    {
+                        number: 7,
+                        arabic: "صِرَاطَ الَّذِينَ أَنْعَمْتَ عَلَيْهِمْ غَيْرِ الْمَغْضُوبِ عَلَيْهِمْ وَلَا الضَّالِّينَ",
+                        translation: "(yaitu) jalan orang-orang yang telah Engkau beri nikmat kepadanya; bukan (jalan) mereka yang dimurkai, dan bukan (pula jalan) mereka yang sesat."
+                    }
+                ]
+            },
+            2: {
+                name: "Al-Baqarah",
+                meaning: "Sapi Betina",
+                ayahs: [
+                    {
+                        number: 1,
+                        arabic: "الم",
+                        translation: "Alif Lam Mim."
+                    },
+                    {
+                        number: 2,
+                        arabic: "ذَٰلِكَ الْكِتَابُ لَا رَيْبَ ۛ فِيهِ ۛ هُدًى لِّلْمُتَّقِينَ",
+                        translation: "Kitab (Al-Qur'an) ini tidak ada keraguan padanya; petunjuk bagi mereka yang bertakwa."
+                    },
+                    {
+                        number: 3,
+                        arabic: "الَّذِينَ يُؤْمِنُونَ بِالْغَيْبِ وَيُقِيمُونَ الصَّلَاةَ وَمِمَّا رَزَقْنَاهُمْ يُنفِقُونَ",
+                        translation: "(yaitu) mereka yang beriman kepada yang ghaib, yang mendirikan shalat, dan menafkahkan sebahagian rezeki yang Kami anugerahkan kepada mereka."
+                    }
+                ]
+            },
+            112: {
+                name: "Al-Ikhlas",
+                meaning: "Kemurnian",
+                ayahs: [
+                    {
+                        number: 1,
+                        arabic: "قُلْ هُوَ اللَّهُ أَحَدٌ",
+                        translation: "Katakanlah: \"Dia-lah Allah, Yang Maha Esa."
+                    },
+                    {
+                        number: 2,
+                        arabic: "اللَّهُ الصَّمَدُ",
+                        translation: "Allah adalah Tuhan yang bergantung kepada-Nya segala sesuatu."
+                    },
+                    {
+                        number: 3,
+                        arabic: "لَمْ يَلِدْ وَلَمْ يُولَدْ",
+                        translation: "Dia tiada beranak dan tidak pula diperanakkan."
+                    },
+                    {
+                        number: 4,
+                        arabic: "وَلَمْ يَكُن لَّهُ كُفُوًا أَحَدٌ",
+                        translation: "Dan tidak ada seorangpun yang setara dengan Dia.\""
+                    }
+                ]
+            }
+        };
+
+        // Popular surahs for display
+        const popularSurahs = [
+            {number: 1, name: "Al-Fatihah", meaning: "Pembuka"},
+            {number: 2, name: "Al-Baqarah", meaning: "Sapi Betina"},
+            {number: 3, name: "Ali 'Imran", meaning: "Keluarga Imran"},
+            {number: 18, name: "Al-Kahf", meaning: "Gua"},
+            {number: 36, name: "Yasin", meaning: "Yasin"},
+            {number: 55, name: "Ar-Rahman", meaning: "Yang Maha Pemurah"},
+            {number: 67, name: "Al-Mulk", meaning: "Kerajaan"},
+            {number: 112, name: "Al-Ikhlas", meaning: "Kemurnian"},
+            {number: 113, name: "Al-Falaq", meaning: "Subuh"},
+            {number: 114, name: "An-Nas", meaning: "Manusia"}
+        ];
+
+        // Initialize the page
+        function initializePage() {
+            displaySurahs(popularSurahs);
+            setupSearch();
+        }
+
+        // Display surah cards
+        function displaySurahs(surahs) {
+            const surahGrid = document.getElementById('surahGrid');
+            surahGrid.innerHTML = '';
+
+            surahs.forEach(surah => {
+                const surahCard = document.createElement('div');
+                surahCard.className = 'surah-card';
+                surahCard.onclick = () => openSurah(surah.number);
+                
+                surahCard.innerHTML = `
+                    <div class="surah-number">${surah.number}</div>
+                    <div class="surah-name">${surah.name}</div>
+                    <div class="surah-meaning">${surah.meaning}</div>
+                `;
+                
+                surahGrid.appendChild(surahCard);
+            });
+        }
+
+        // Setup search functionality
+        function setupSearch() {
+            const searchInput = document.getElementById('searchInput');
+            searchInput.addEventListener('input', (e) => {
+                const searchTerm = e.target.value.toLowerCase();
+                const filteredSurahs = popularSurahs.filter(surah => 
+                    surah.name.toLowerCase().includes(searchTerm) ||
+                    surah.meaning.toLowerCase().includes(searchTerm) ||
+                    surah.number.toString().includes(searchTerm)
+                );
+                displaySurahs(filteredSurahs);
+            });
+        }
+
+        // Open surah for reading
+        function openSurah(surahNumber) {
+            const surah = quranData[surahNumber];
+            
+            if (!surah) {
+                alert('Maaf, surah ini belum tersedia. Silakan pilih surah lain.');
+                return;
+            }
+
+            // Update header
+            document.getElementById('currentSurah').textContent = `${surahNumber}. ${surah.name}`;
+            document.getElementById('surahInfo').textContent = `${surah.meaning} • ${surah.ayahs.length} Ayat`;
+
+            // Display ayahs
+            const ayahContainer = document.getElementById('ayahContainer');
+            ayahContainer.innerHTML = '';
+
+            surah.ayahs.forEach(ayah => {
+                const ayahDiv = document.createElement('div');
+                ayahDiv.className = 'ayah';
+                
+                ayahDiv.innerHTML = `
+                    <div class="ayah-number">${ayah.number}</div>
+                    <div class="ayah-arabic">${ayah.arabic}</div>
+                    <div class="ayah-translation">${ayah.translation}</div>
+                `;
+                
+                ayahContainer.appendChild(ayahDiv);
+            });
+
+            // Show reader, hide selection
+            document.getElementById('surahSelection').style.display = 'none';
+            document.getElementById('quranReader').style.display = 'block';
+            
+            // Scroll to top
+            window.scrollTo(0, 0);
+        }
+
+        // Close surah reader
+        function closeSurah() {
+            document.getElementById('surahSelection').style.display = 'block';
+            document.getElementById('quranReader').style.display = 'none';
+            window.scrollTo(0, 0);
+        }
+
+        // Scroll to top
+        function scrollToTop() {
+            document.getElementById('ayahContainer').scrollTop = 0;
+        }
+
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', initializePage);
+    </script>
+</body>
+</html>
