@@ -708,7 +708,7 @@ body {
 .forum-avatar {
   width: 50px;
   height: 50px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #67B3E5 0%, #76CCE3 100%);
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -722,11 +722,10 @@ body {
 .post-info h3 {
   color: #555555;
   font-size: 1.1rem;
-  margin-bottom: 0.2rem;
 }
 
 .post-meta {
-  font-size: 0.9rem;
+  font-size: 0.7rem;
   color: #888;
 }
 
@@ -742,6 +741,7 @@ body {
 }
 
 .post-actions {
+  justify-self: left;
   display: flex;
   gap: 1rem;
   margin-left: 66px;
@@ -764,7 +764,7 @@ body {
 
 .action-btn:hover {
   background: rgba(102, 126, 234, 0.1);
-  color: #667eea;
+  color: #67B3E5;
 }
 
 .action-btn.liked {
@@ -785,6 +785,11 @@ body {
   display: block;
 }
 
+.reply-form textarea:focus {
+  outline: none;
+  border-color: #67B3E5;
+}
+
 .reply-form textarea {
   width: 100%;
   padding: 1rem;
@@ -802,7 +807,7 @@ body {
 }
 
 .reply-btn {
-  background: #667eea;
+  background: #67B3E5;
   color: white;
   border: none;
   padding: 0.5rem 1.5rem;
@@ -838,11 +843,11 @@ body {
 }
 
 .reply {
-  background: #f8f9fa;
+  background: rgba(255, 255, 255, 0.4);
   border-radius: 10px;
   padding: 1.5rem;
   margin-bottom: 1rem;
-  border-left: 4px solid #667eea;
+  border-left: 4px solid #67B3E5;
 }
 
 .reply-header {
@@ -855,7 +860,7 @@ body {
 .reply-avatar {
   width: 35px;
   height: 35px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #67B3E5 0%, #76CCE3 100%);
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -868,11 +873,10 @@ body {
 .reply-info h4 {
   color: #555555;
   font-size: 1rem;
-  margin-bottom: 0.2rem;
 }
 
 .reply-meta {
-  font-size: 0.8rem;
+  font-size: 0.6rem;
   color: #888;
 }
 
@@ -882,6 +886,7 @@ body {
 }
 
 .reply-actions {
+  justify-self: left;
   display: flex;
   gap: 1rem;
   margin-top: 1rem;
@@ -1163,9 +1168,20 @@ body {
     margin-left: 0;
   }
 
-  .post-header {
-    flex-direction: column;
-    align-items: flex-start;
+  .post-actions {
+    justify-self: center;
+    gap: 0rem;
+    margin-bottom: 1rem;
+  }
+
+  .reply-actions {
+    justify-self: center;
+    gap: 0rem;
+    margin-top: 1rem;
+  }
+
+  .footer-menu {
+    display: block;
   }
 }
 
@@ -1185,19 +1201,65 @@ body {
   .subjudul {
       font-size: 1rem;
   }
+
+  .container {
+    padding: 0 1.2rem;
+    padding-bottom: 4rem;
+  }
   
   .kegiatan-grid,
   .artikel-grid {
-      grid-template-columns: 1fr;
+    grid-template-columns: 1fr;
+  }
+
+  .forum-container {
+    padding: 1.5rem;
   }
   
   .forum-post {
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
+    flex-direction: column;
+    align-items: center;
+    font-size: 70%;
   }
-  
+
   .forum-avatar {
-      margin-bottom: 1rem;
+    width: 40px;
+    height: 40px;
+  }
+
+  .reply-avatar {
+    width: 25px;
+    height: 25px;
+  }
+  .post-info h3 {
+    font-size: 0.9rem;
+  }
+  .reply-info h4 {
+    font-size: 0.8rem;
+  }
+
+  .post-meta {
+    font-size: 0.5rem;
+  }
+  .reply-meta {
+    font-size: 0.4rem;
+  }
+
+  .action-btn {
+    font-size: 0.7rem;
+    padding: 0.1rem 0.6rem;
+  }
+
+  .reply-actions .action-btn {
+    font-size: 0.6rem;
+    padding: 0 0.5rem;
+  }
+
+  .menu-atas {
+    margin: 0 -40px;
+  }
+
+  .footer-content {
+    font-size: 85%;
   }
 }
